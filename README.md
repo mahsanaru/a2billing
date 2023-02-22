@@ -1,3 +1,8 @@
+## Important Note
+
+  - It was not possible to make a fork repo private due to github restrictions, so I've pushed all codes here into another repo.
+  - Also as I've used github cdn for serving the installation scrips files (using http://raw.githubusercontent.com/....), you can not test the helm charts in private mode.
+
 ## Prerequisites
 This code was tested on a cluster with the following versions:
   - Kubernetes: v1.26.0
