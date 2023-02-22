@@ -28,7 +28,7 @@ For installing the cluster run the following command in the cloned git directory
 ## NOTE
 
 I have added a sample pv.yaml to the DB chart to use for testing purposes. You can remove this line in run.sh.
-Ingress does not support TCP or UDP services so for the SIP protocol part, a popular workaround according to this post is to make Nginx ingress controller use the flags --tcp-services-configmap and --udp-services-configmap to point to an existing config map where the key is the external port to use and the value indicates the service to expose using the format: <namespace/service name>:<service port>:[PROXY]:[PROXY]. For this purpose, I have created the needed configmaps in the a2billing charts. IBM has a Voice Gateway for on-premises installation as well. 
+Ingress does not support TCP or UDP services so for the SIP protocol part, a popular workaround according to [this post](https://stackoverflow.com/questions/49338232/is-there-some-way-to-handle-sip-rtp-diameter-m3ua-traffic-in-kubernetes) is to make Nginx ingress controller use the flags --tcp-services-configmap and --udp-services-configmap to point to an existing config map where the key is the external port to use and the value indicates the service to expose using the format: <namespace/service name>:<service port>:[PROXY]:[PROXY]. For this purpose, I have created the needed configmaps in the a2billing charts. IBM has a Voice Gateway for on-premises installation as well. 
 
 ## ISSUES
  
