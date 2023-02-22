@@ -1,0 +1,23 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: bill-diduse
+  namespace: a2billing
+spec:
+  schedule: "0 2 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: php
+            image: php:5.6-cli-alpine
+            command: [ "/bin/sh", "-c", "apk add --update wget git && wget -O /tmp/script-cronjob.sh https://raw.githubusercontent.com/mahsanaru/a2billing/develop/helm/a2billing/scripts/script-cronjob.sh
+              && /tmp/script-cronjob.sh && chmod 777 /tmp/script-cronjob.sh && php /tmp/a2billing/Cronjobs/a2billing_bill_diduse.php" ]
+            volumeMounts:
+              - name: data-volume
+                mountPath: /tmp
+          restartPolicy: OnFailure
+          volumes:
+          - name: data-volume
+            emptyDir: {}

@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+  labels:
+    app: web-customer
+  name: web-customer
+  namespace: a2billing
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: web-customer
+  template:
+    metadata:
+      labels:
+        app: web-customer
+    spec:
+      containers:
+      - image: webdevops/php-apache:5.6
+        imagePullPolicy: IfNotPresent
+        name: php-apache
+        env:
+        - name: DB_HOSTNAME
+          value: mysql.a2billing.svc.cluster.local
+        volumeMounts:
+         - name: script
+           mountPath: /entrypoint.d
+      initContainers:
+      - name: script
+        image: busybox:1.28
+        command: ["sh", '-c', "wget -O /data/script-cust.sh https://raw.githubusercontent.com/mahsanaru/a2billing/develop/helm/a2billing/scripts/script-cust.sh && chmod 777 /data/script-cust.sh"]
+        volumeMounts:
+        - mountPath: /data
+          name: script
+      volumes:
+      - name: script
+        emptyDir: {}

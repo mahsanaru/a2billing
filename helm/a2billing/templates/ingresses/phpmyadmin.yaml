@@ -1,0 +1,18 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: phpmyadmin
+  namespace: a2billing
+spec:
+  rules:
+  - host: cluster
+    http:
+      paths:
+      - backend:
+          service:
+            name: phpmyadmin
+            port:
+              number: 80
+        path: /phpmyadmin
+        pathType: Exact
+      

@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: sip-server
+  name: sip-server
+  namespace: a2billing
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sip-server
+  template:
+    metadata:
+      labels:
+        app: sip-server
+    spec:
+      containers:
+      - image: webdevops/php-apache
+        imagePullPolicy: IfNotPresent
+        name: {{ .Release.Name }}-php-apache
+        env:
+        - name: DB_HOSTNAME
+          value: mysql.a2billing.svc.cluster.local
+        volumeMounts:
+         - name: script
+           mountPath: /entrypoint.d
+      initContainers:
+      - name: script
+        image: busybox:1.28
+        command: ["sh", '-c', "wget -O /data/script.sh https://raw.githubusercontent.com/mahsanaru/a2billing/develop/helm/a2billing/scripts/script.sh && chmod 777 /data/script.sh"]
+        volumeMounts:
+        - mountPath: /data
+          name: script
+      volumes:
+      - name: script
+        emptyDir: {}

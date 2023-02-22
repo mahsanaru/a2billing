@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: web-admin
+  name: web-admin
+  namespace: a2billing
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: web-admin
+  template:
+    metadata:
+      labels:
+        app: web-admin
+    spec:
+      containers:
+      - image: webdevops/php-apache:5.6
+        imagePullPolicy: IfNotPresent
+        name: php-apache
+        env:
+        - name: DB_HOSTNAME
+          value: mysql.a2billing.svc.cluster.local
+        volumeMounts:
+         - name: script
+           mountPath: /entrypoint.d
+      initContainers:
+      - name: script
+        image: busybox:1.28
+        command: ["sh", '-c', "wget -O /data/script-admin.sh https://raw.githubusercontent.com/mahsanaru/a2billing/develop/helm/a2billing/scripts/script-admin.sh && chmod 777 /data/script-admin.sh"]
+        volumeMounts:
+        - mountPath: /data
+          name: script
+      volumes:
+      - name: script
+        emptyDir: {}

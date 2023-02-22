@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: tcp-sip
+  namespace: a2billing
+data:
+  80: "a2billing/sip-server:5060"

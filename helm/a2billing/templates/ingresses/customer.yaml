@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: web-customer
+  namespace: a2billing
+  annotations:
+    ingress.kubernetes.io/rewrite-target: /customer
+spec:
+  rules:
+  - host: cluster
+    http:
+      paths:
+      - backend:
+          service:
+            name: web-customer
+            port:
+              number: 80
+        path: /a2billing/customer
+        pathType: Exact

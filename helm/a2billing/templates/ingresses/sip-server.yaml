@@ -1,0 +1,17 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: sip-server
+  namespace: a2billing
+spec:
+  rules:
+  - host: cluster
+    http:
+      paths:
+      - backend:
+          service:
+            name: sip-server
+            port:
+              number: 80
+        path: /
+        pathType: Exact

@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: web-admin
+  namespace: a2billing
+  annotations:
+    ingress.kubernetes.io/rewrite-target: /admin
+spec:
+  rules:
+  - host: cluster
+    http:
+      paths:
+      - backend:
+          service:
+            name: web-admin
+            port:
+              number: 80
+        path: /a2billing/admin
+        pathType: Exact
